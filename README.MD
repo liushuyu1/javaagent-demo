@@ -40,6 +40,7 @@ https://github.com/liushuyu1/javaagent-demo
 + [common]模块只是一些简单的类
 + [javaagent]模块是javaagent的demo
 + [test]模块是测试javaagent的demo
++ master分支为jdk17版本，jdk8分支为jdk8版本
 1. 使用IDE加载项目之后，先执行mvn clean install
 2. 测试premain请运行PreMainTest，然后观察控制台
 3. 测试agentmain先运行AgentMainTestStep1，然后运行AgentMainTestStep2，然后观察控制台

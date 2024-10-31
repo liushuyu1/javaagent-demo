@@ -9,6 +9,9 @@ import com.javaagent.demo.common.C;
  */
 public class PreMainTest {
 
+    /**
+     * 执行main方法的时候，添加jvm参数-javaagent:javaagent\target\javaagent-1.0.0.jar
+     */
     public static void main(String[] args) {
 
         /**
