@@ -17,6 +17,14 @@
             <version>1.0.0</version>
         </dependency>
 
+        <!-- PS：需要注意的是，如果使用的是jdk11或者以上的版本，那么默认情况下就已经有相关的依赖了，不需要单独再去引入 -->
+        <!-- https://mvnrepository.com/artifact/io.earcam.wrapped/com.sun.tools.attach -->
+        <dependency>
+            <groupId>io.earcam.wrapped</groupId>
+            <artifactId>com.sun.tools.attach</artifactId>
+            <version>1.8.0_jdk8u172-b11</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
         <dependency>
             <groupId>org.javassist</groupId>
