@@ -46,6 +46,12 @@ https://github.com/liushuyu1/javaagent-demo
 3. 测试agentmain先运行AgentMainTestStep1，然后运行AgentMainTestStep2，然后观察控制台
 4. 测试Arthas的动态编译字节码，请运行DynamicCompilerTest
 
+## demo的运行结果样例
+premain的样例
+![img_1.png](img_1.png)
+agentmain的样例
+![img_2.png](img_2.png)
+
 ## 需要注意的点
 ### 1.agentmain方法的编写
 这种方式对类的修改是由限制的，对比原来的老类，由如下要求：
