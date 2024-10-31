@@ -1,4 +1,4 @@
-package com.javaagent.demo;
+package com.javaagent.demo.common;
 
 public class B {
 

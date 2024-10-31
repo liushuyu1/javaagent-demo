@@ -26,36 +26,36 @@ public class PreMainDemo {
 
 
     public static void premain(String agentArgs, Instrumentation inst) {
-        log.info("PreMain start");
+        log.info("进入premain方法啦！！！！！");
         inst.addTransformer(new ClassFileTransformer() {
             @Override
             public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer){
-                log.info("#####################准备搞事"+className);
                 /**
                  * 少量代码修改
                  * 使用javassist技术进行字节码修改
                  */
-                if("com/javaagent/demo/A".equals(className)){
+                if("com/javaagent/demo/common/A".equals(className)){
                     try {
-                        log.info("###########################遇到了A");
+                        log.info("准备搞事：使用premain重新加载com.javaagent.demo.common.A类");
                         // 从ClassPool获得CtClass对象
                         ClassPool classPool = ClassPool.getDefault();
                         classPool.insertClassPath(new LoaderClassPath(loader));
-                        log.info("########1");
-                        final CtClass clazz = classPool.get("com.javaagent.demo.A");
-                        log.info("########2");
+                        final CtClass clazz = classPool.get("com.javaagent.demo.common.A");
                         CtMethod convertToAbbr = clazz.getDeclaredMethod("hello");
-                        log.info("########3");
                         String methodBody = "System.out.println(\"A.hello()被premain在加载时重构了！\");";
                         convertToAbbr.setBody(methodBody);
-                        log.info("########4");
                         // 返回字节码，并且detachCtClass对象
                         byte[] byteCode = clazz.toBytecode();
                         // 将CtClass从ClassPool中移除，预防OOM
                         clazz.detach();
-                        log.info("########5");
                         classfileBuffer = byteCode;
                     } catch (Exception ex) {
+                        /**
+                         * 需要注意的是：
+                         * 很多时候，执行premain的时候报错了并不会打印日志。
+                         * 此时可以看看运行javaagent的项目是否将以上代码需要的包都依赖了
+                         * 这里需要依赖javassist
+                         */
                         log.error(ex.getMessage(),ex);
                     }
                 }
@@ -66,26 +66,36 @@ public class PreMainDemo {
                  * 2.然后加载到内存中替换掉原来的类
                  * 3.比如下面的就是将修改后的C.java文件替换掉原来的C.class类。
                  */
-                if("com/javaagent/demo/C".equals(className)){
-                    log.info("###########################遇到了C");
-                    // 使用 Arthas 动态编译
-                    DynamicCompiler dynamicCompiler = new DynamicCompiler(Thread.currentThread().getContextClassLoader());
-
-                    String sourceCode = null;
+                if("com/javaagent/demo/common/C".equals(className)){
                     try {
-                        sourceCode = FileUtils.readFileToString(new File("src/main/resources/C.java"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    dynamicCompiler.addSource("C", sourceCode);
-                    Map<String, byte[]> byteCodes = dynamicCompiler.buildByteCodes();
+                        log.info("准备搞事：使用premain重新加载com.javaagent.demo.common.C类");
+                        // 使用 Arthas 动态编译
+                        DynamicCompiler dynamicCompiler = new DynamicCompiler(Thread.currentThread().getContextClassLoader());
+                        File cJava = new File("test/src/main/resources/C.java");
+                        log.info("test/src/main/resources/C.java是否存在：" + cJava.exists());
+                        String sourceCode = FileUtils.readFileToString(cJava);
+                        dynamicCompiler.addSource("C", sourceCode);
 
-                    for (Map.Entry<String, byte[]> entry : byteCodes.entrySet()) {
-                        log.info("entry.getKey:" + entry.getKey());
-                        if(entry.getKey().endsWith("C")){
-                            classfileBuffer = entry.getValue();
-                            break;
+                        /** 这里的byteCodes里面，一个类就有一份字节码，如果有内部类之类的就算多一份**/
+                        Map<String, byte[]> byteCodes = dynamicCompiler.buildByteCodes();
+                        for (Map.Entry<String, byte[]> entry : byteCodes.entrySet()) {
+                            log.info("类的全限定名:" + entry.getKey());
+                            if(entry.getKey().endsWith("C")){
+                                classfileBuffer = entry.getValue();
+                                break;
+                            }
                         }
+                    } catch (IOException e) {
+                        /**
+                         * 需要注意的是：
+                         * 很多时候，执行premain的时候报错了并不会打印日志。
+                         * 此时可以看看运行javaagent的项目是否将以上代码需要的包都依赖了
+                         * 这里需要依赖
+                         * arthas-memorycompiler
+                         * commons-lang3
+                         * org.apache.commons.io
+                         */
+                        log.error(e.getMessage(),e);
                     }
                 }
 

@@ -25,6 +25,7 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- PS：需要注意的是，如果使用的是jdk11或者以上的版本，那么默认情况下就已经有相关的依赖了，不需要单独再去引入 -->
         <!-- https://mvnrepository.com/artifact/io.earcam.wrapped/com.sun.tools.attach -->
         <dependency>
             <groupId>io.earcam.wrapped</groupId>
@@ -66,8 +67,12 @@
                             <Project-version>${project.version}</Project-version>
                             <Premain-Class>com.javaagent.demo.PreMainDemo</Premain-Class>
                             <Agent-Class>com.javaagent.demo.AgentMainDemo</Agent-Class>
+                            <!-- 为true时表示能够重新定义class -->
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                            <!-- 为true时表示能够重新转换class，实现字节码替换 -->
                             <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                            <!-- 为true时表示能够设置native方法的前缀 -->
+                            <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
                         </manifestEntries>
                     </archive>
                     <skip>true</skip>
