@@ -37,9 +37,9 @@ javaagent字面意思java代理，其实就是类的代理，有点类似于jdk�
 
 ## 写了个简单的demo
 https://github.com/liushuyu1/javaagent-demo
-[common]模块只是一些简单的类
-[javaagent]模块是javaagent的demo
-[test]模块是测试javaagent的demo
++ [common]模块只是一些简单的类
++ [javaagent]模块是javaagent的demo
++ [test]模块是测试javaagent的demo
 1. 使用IDE加载项目之后，先执行mvn clean install
 2. 测试premain请运行PreMainTest，然后观察控制台
 3. 测试agentmain先运行AgentMainTestStep1，然后运行AgentMainTestStep2，然后观察控制台
