@@ -32,11 +32,18 @@ javaagent字面意思java代理，其实就是类的代理，有点类似于jdk�
 
 ## 怎么用javaagent
 网上太多参考了，推荐下面两个链接
-premain使用：https://www.cnblogs.com/stateis0/p/9062199.html
-agentmain使用： https://www.cnblogs.com/stateis0/p/9062201.html
+1. premain使用：https://www.cnblogs.com/stateis0/p/9062199.html
+2. agentmain使用： https://www.cnblogs.com/stateis0/p/9062201.html
 
 ## 写了个简单的demo
 https://github.com/liushuyu1/javaagent-demo
+[common]模块只是一些简单的类
+[javaagent]模块是javaagent的demo
+[test]模块是测试javaagent的demo
+1. 使用IDE加载项目之后，先执行mvn clean install
+2. 测试premain请运行PreMainTest，然后观察控制台
+3. 测试agentmain先运行AgentMainTestStep1，然后运行AgentMainTestStep2，然后观察控制台
+4. 测试Arthas的动态编译字节码，请运行DynamicCompilerTest
 
 ## 需要注意的点
 ### 1.agentmain方法的编写
