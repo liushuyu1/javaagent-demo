@@ -16,6 +16,8 @@ public class AgentMainTestStep2 {
         for (VirtualMachineDescriptor vmd : list) {
             //如果虚拟机的名称为 xxx 则 该虚拟机为目标虚拟机，获取该虚拟机的 pid
             if (vmd.displayName().endsWith("AgentMainTestStep1")) {
+                //attach功能介绍：https://www.jianshu.com/p/39d189961773
+                //目标jvm禁用attach功能的方法：启动时加上jvm参数-XX:+DisableAttachMechanism
                 VirtualMachine vm = VirtualMachine.attach(vmd.id());
                 //然后加载 agent.jar 发送给该虚拟机
                 vm.loadAgent("javaagent/target/javaagent-1.0.0.jar");
